@@ -15,7 +15,7 @@ public class Train extends Transport {
     private float speed = 0;
 
 
-    public Train(String name){
+    public Train(String name) throws Exception {
         super("Поезд " + name);
         this.status = Status.MOVING;
     }

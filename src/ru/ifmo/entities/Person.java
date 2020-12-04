@@ -2,8 +2,36 @@ package ru.ifmo.entities;
 import ru.ifmo.entities.transport.Transport;
 import ru.ifmo.enviroments.Place;
 import ru.ifmo.interfaces.IHumanoid;
+import ru.ifmo.interfaces.IRead;
+public class Person extends Entity implements IHumanoid, IRead {
 
-public class Person extends Entity implements IHumanoid {
+    public static class InventoryFullError extends RuntimeException{
+        public InventoryFullError(){
+            super("Инвентарь полон");
+        }
+    }
+    public static class ItemNotFoundError extends RuntimeException{
+        public ItemNotFoundError(){
+            super("предмет не найден");
+        }
+    }
+    public static class TransportError extends RuntimeException{
+        public TransportError(String name){
+            super(name + " уже находится в транспорте");
+        }
+    }
+    public static class NoTransportError extends RuntimeException{
+        public NoTransportError (String name){
+            super(name + " не находится в транспорте");
+        }
+    }
+    public static class NoSleepError extends RuntimeException {
+        public NoSleepError(String name) {
+            super(name + " не спит");
+        }
+    }
+
+
     private Item[] items = new Item[100];
 
     public enum Status{
@@ -18,7 +46,7 @@ public class Person extends Entity implements IHumanoid {
 
     private Status status;
     private Transport transport;
-    public Person(String name){
+    public Person(String name) throws Exception {
         super("[Человек] " + name);
         this.status = Status.STAYING;
         this.transport = null;
@@ -28,20 +56,20 @@ public class Person extends Entity implements IHumanoid {
         status = Status.SLEEPING;
         System.out.println(this.name + " засыпает");
 
-    };
-    public void wakeup(){
+    }
+    public void wakeup() throws NoSleepError{
 
         if(this.status != Status.SLEEPING) {
-            throw new RuntimeException(this.name + "не спит");
+            throw new NoSleepError(this.name);
         }
         else {
             status = Status.CHILLING;
             System.out.println(this.name + " просыпается");
         }
     }
-    public void wakeup(Entity e){
+    public void wakeup(Entity e) throws NoSleepError{
         if(this.status != Status.SLEEPING) {
-            throw new RuntimeException(this.name + "не спит");
+            throw new NoSleepError(this.name);
         }
         else {
             status = Status.STAYING;
@@ -77,48 +105,58 @@ public class Person extends Entity implements IHumanoid {
         status = Status.SITTING;
         System.out.println(this.name + " присел");
     }
-    public void wear(Item i){
-        if(i.getStatus() == Item.Status.BUSY){
-            throw new RuntimeException("Предмет занят");
+    public void wear(Item i) throws InventoryFullError{
+        try{
+            i.wear();
         }
-        else{
+        catch (Item.ItemBusyError ex){
+            System.out.println(ex.getMessage());
+            return;
+        }
+
+
             for(int a = 0; a < 100; a++ ){
                 if (this.items[a] == null) {
                     items[a] = i;
-                    i.changeStatus(Item.Status.BUSY);
                     System.out.println(this.name + " надел " + i.name);
                     return;
                 }
             }
-            throw new RuntimeException("Инвентарь полон");
-        }
+            throw new InventoryFullError();
+
     }
-    public void unwear(Item i){
+    public void unwear(Item i) throws ItemNotFoundError{
+        try{
+            i.unwear();
+        }
+        catch(Item.ItemFreeError ex){
+            System.out.println(ex.getMessage());
+            return;
+        }
         for(int a = 0; a < 100; a++ ) {
             if(this.items[a] == i){
                 this.items[a] = null;
-                i.changeStatus(Item.Status.FREE);
                 System.out.println(this.name + " снял " + i.name);
                 return;
         }
-            throw new RuntimeException("Предмет не найден");
+            throw new ItemNotFoundError();
         }
     }
     public Transport getTransport(){
         return this.transport;
     }
-    public void sitTransport(Transport t){
+    public void sitTransport(Transport t) throws TransportError{
         if (this.transport != null) {
-            throw new RuntimeException(this.name + " уже находится в транспорте");
+            throw new TransportError(this.name);
         }
         else{
             this.transport = t;
             System.out.println(this.name + " сел в " + t.name);
         }
     }
-    public void leaveTransport(){
+    public void leaveTransport() throws NoTransportError{
         if (this.transport == null){
-            throw new RuntimeException(this.name + " не находится в транспорте");
+            throw new NoTransportError(this.name);
         }
         else{
             System.out.println(this.name + " вышел из " + this.transport.name);
@@ -128,6 +166,9 @@ public class Person extends Entity implements IHumanoid {
     }
     public Item[] getItems(){
         return items;
+    }
+    public void read(String text){
+        System.out.println(this.name + " читает: " + text);
     }
 
 
