@@ -1,6 +1,4 @@
 package ru.ifmo.entities.transport.train;
-import ru.ifmo.entities.Entity;
-import ru.ifmo.entities.Person;
 import ru.ifmo.entities.transport.Transport;
 import ru.ifmo.enviroments.Place;
 

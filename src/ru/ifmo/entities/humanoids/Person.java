@@ -1,9 +1,12 @@
-package ru.ifmo.entities;
+package ru.ifmo.entities.humanoids;
+import ru.ifmo.entities.Entity;
+import ru.ifmo.entities.items.Item;
 import ru.ifmo.entities.transport.Transport;
 import ru.ifmo.enviroments.Place;
 import ru.ifmo.interfaces.IHumanoid;
 import ru.ifmo.interfaces.IRead;
-public class Person extends Entity implements IHumanoid, IRead {
+import ru.ifmo.interfaces.IThink;
+public class Person extends Entity implements IHumanoid, IRead, IThink {
 
     public static class InventoryFullError extends RuntimeException{
         public InventoryFullError(){
@@ -133,14 +136,16 @@ public class Person extends Entity implements IHumanoid, IRead {
             System.out.println(ex.getMessage());
             return;
         }
+
         for(int a = 0; a < 100; a++ ) {
-            if(this.items[a] == i){
+            if (this.items[a] == i) {
                 this.items[a] = null;
                 System.out.println(this.name + " снял " + i.name);
                 return;
+            }
         }
             throw new ItemNotFoundError();
-        }
+
     }
     public Transport getTransport(){
         return this.transport;
@@ -169,6 +174,9 @@ public class Person extends Entity implements IHumanoid, IRead {
     }
     public void read(String text){
         System.out.println(this.name + " читает: " + text);
+    }
+    public void think(String text){
+        System.out.println(this.name + " думает: " + text);
     }
 
 

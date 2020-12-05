@@ -1,7 +1,8 @@
-package ru.ifmo.entities;
+package ru.ifmo.entities.humanoids;
+import ru.ifmo.entities.items.Item;
 import ru.ifmo.entities.transport.Transport;
 
-public class Controller extends Person{
+public class Controller extends Person {
     public static class NoPassangerError extends RuntimeException{
         public NoPassangerError(Person p){
             super("Не удалось высадить " + p.name + " т.к транспорт контроллёра несоответствует транспорту " + p.name);

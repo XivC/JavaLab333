@@ -1,9 +1,11 @@
-package ru.ifmo.entities;
+package ru.ifmo.entities.items;
 
-public class Item extends Entity{
+import ru.ifmo.entities.Entity;
+
+public class Item extends Entity {
     public enum Status{
         BUSY,
-        FREE;
+        FREE
     }
     public static class ItemBusyError extends RuntimeException{
         public ItemBusyError(){

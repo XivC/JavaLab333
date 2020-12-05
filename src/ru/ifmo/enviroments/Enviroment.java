@@ -22,6 +22,23 @@ public class Enviroment implements IEnviroment{
     }
     public final int[] getTime(){
 
-        return new int[]{this.t_hours, this.t_mins, this.t_secs};
+        abstract class DateTime{
+            int h, m, s;
+            public DateTime(int h, int m, int s){
+                this.h = h;
+                this.m = m;
+                this.s = s;
+
+            }
+            public abstract int[] getTime();
+        }
+        return new DateTime(this.t_hours, this.t_mins, this.t_secs){
+            @Override
+            public int[] getTime(){
+                return new int[] {this.h, this.m, this.s};
+            }
+        }.getTime();
+
+
     }
 }
