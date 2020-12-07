@@ -7,19 +7,19 @@ public class Item extends Entity {
         BUSY,
         FREE
     }
-    public static class ItemBusyError extends RuntimeException{
+    public static class ItemBusyError extends Exception{
         public ItemBusyError(){
             super("Предмет занят");
         }
     }
-    public static class ItemFreeError extends RuntimeException{
+    public static class ItemFreeError extends Exception{
         public ItemFreeError(){
             super("Предмет не надет");
         }
     }
     private Status status;
     public Item(String name) throws Exception {
-        super("[Предмет] " + name);
+        super("[Предмет]" + name);
         status = Status.FREE;
     }
     public Status getStatus(){

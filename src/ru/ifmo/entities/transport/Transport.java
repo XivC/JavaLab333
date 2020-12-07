@@ -6,7 +6,7 @@ abstract public class Transport extends Entity{
 
 
     public Transport(String name) throws Exception {
-        super("[Транспорт] " + name);
+        super("[Транспорт]" + name);
 
     }
 

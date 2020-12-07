@@ -1,7 +1,6 @@
 package ru.ifmo;
 import ru.ifmo.entities.Entity;
 import ru.ifmo.entities.items.Cilindr;
-import ru.ifmo.entities.items.Item;
 import ru.ifmo.entities.humanoids.Person;
 import ru.ifmo.entities.items.Shares;
 import ru.ifmo.enviroments.Place;
@@ -10,6 +9,8 @@ import ru.ifmo.entities.transport.train.Train;
 import ru.ifmo.entities.buildings.Building;
 import ru.ifmo.enviroments.City;
 import ru.ifmo.entities.items.Gazeta;
+
+import java.lang.reflect.Field;
 
 public class Main {
 
